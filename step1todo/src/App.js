@@ -21,7 +21,7 @@ class App extends Component {
           {
             id: 100001,
             status: true,
-            title: '지방선거 오픈(기간1-4)',
+            title: '투두 등록',
             writeDate: '2018.04.02',
             doneDate: '2018.05.26',
             writer: 'scarlett.kim',
@@ -29,7 +29,7 @@ class App extends Component {
           {
             id: 100002,
             status: true,
-            title: '지방선거 기간7',
+            title: '투두 삭제',
             writeDate: '2018.04.02',
             doneDate: '2018.05.26',
             writer: 'scarlett.kim',
@@ -43,7 +43,7 @@ class App extends Component {
           {
             id: 200001,
             status: false,
-            title: '지방선거 2차 오픈(기간5-8)',
+            title: '투두 수정',
             writeDate: '2018.04.02',
             doneDate: '',
             writer: 'scarlett.kim',
@@ -51,7 +51,7 @@ class App extends Component {
           {
             id: 200002,
             status: false,
-            title: '리액트 투두 만들기',
+            title: '투두 상태 변경',
             writeDate: '2018.03.01',
             doneDate: '',
             writer: 'scarlett.kim',
