@@ -3,11 +3,14 @@ import TodoItem from './todoItem';
 
 class TodoList extends Component {
   render() {
-    const { todoLists, onDelete } = this.props;
+    const { todoLists, onDelete, onStatusModify } = this.props;
     const todoTitle = todoLists.title;
     const viewTodoList = todoLists.todos.map((todo, index) => (
       <TodoItem
+        todoType={todoLists.type}
+        status={todo.status}
         onDelete={onDelete}
+        onStatusModify={onStatusModify}
         key={todo.id}
         id={todo.id}
         title={todo.title}

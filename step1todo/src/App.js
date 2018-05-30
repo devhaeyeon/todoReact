@@ -61,6 +61,22 @@ class App extends Component {
     };
   }
 
+  getDateNumberText(s) {
+    if (s < 10) {
+      return `0${s}`;
+    } else {
+      return s;
+    }
+  }
+
+  getTodayDate() {
+    const dateObj = new Date();
+    const year = dateObj.getFullYear();
+    let month = this.getDateNumberText(dateObj.getMonth() + 1);
+    let day = this.getDateNumberText(dateObj.getDate());
+    return `${year}.${month}.${day}`;
+  }
+
   handleAddTodo = addTodo => {
     this.setState({
       ingTodos: {
@@ -72,6 +88,19 @@ class App extends Component {
       },
     });
   };
+
+  handleDoneAddTodo = addTodo => {
+    this.setState({
+      doneTodos: {
+        title: '완료된 Todo',
+        todos: this.state.doneTodos.todos.concat({
+          ...addTodo,
+        }),
+        type: 'ing',
+      },
+    });
+  };
+
 
   handleDeleteTodo = id => {
     this.setState({
@@ -85,6 +114,60 @@ class App extends Component {
     });
   };
 
+  handleDoneDeleteTodo = id => {
+    this.setState({
+      doneTodos: {
+        title: '완료된 Todo',
+        type: 'done',
+        todos: this.state.doneTodos.todos.filter(obj => {
+          return obj.id !== id;
+        }),
+      },
+    });
+  };
+
+  handleStatusModifyTodo = (id, todoType) => {
+    let moveTodos = [];
+    if(todoType==='ing') {
+      moveTodos = this.state.ingTodos.todos.filter((obj)=>{
+        return obj.id===id;
+      }).map((obj,idx)=> {
+        return {
+          doneDate :this.getTodayDate(),
+          id:obj.id,
+          status:!obj.status,
+          title : obj.title,
+          writeDate : obj.writeDate,
+          writer : obj.writer
+        }
+      });  
+    } else {
+      moveTodos = this.state.doneTodos.todos.filter((obj)=>{
+        return obj.id===id;
+      }).map((obj,idx)=> {
+        return {
+          doneDate :"",
+          id:obj.id,
+          status:!obj.status,
+          title : obj.title,
+          writeDate : this.getTodayDate(),
+          writer : obj.writer
+        }
+      });
+    }
+    
+
+
+    if(todoType==='ing') {
+      this.handleDeleteTodo(id);
+      this.handleDoneAddTodo(moveTodos[0]);
+    } else {
+      this.handleDoneDeleteTodo(id);
+      this.handleAddTodo(moveTodos[0]);
+    }
+
+  };
+
   render() {
     const ingTodoLists = this.state.ingTodos;
     const doneTodoLists = this.state.doneTodos;
@@ -96,8 +179,8 @@ class App extends Component {
           onAdd={this.handleAddTodo}
           ingTodos={ingTodoLists}
         />
-        <TodoList todoLists={ingTodoLists} onDelete={this.handleDeleteTodo} />
-        <TodoList todoLists={doneTodoLists} onDelete={this.handleDeleteTodo} />
+        <TodoList todoLists={ingTodoLists} onDelete={this.handleDeleteTodo} onStatusModify={this.handleStatusModifyTodo}/>
+        <TodoList todoLists={doneTodoLists} onDelete={this.handleDeleteTodo} onStatusModify={this.handleStatusModifyTodo}/>
       </div>
     );
   }
